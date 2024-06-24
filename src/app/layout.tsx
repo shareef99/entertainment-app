@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import QueryProvider from "@/app/query-provider";
+import { ReactNode } from "react";
+import SearchProvider from "@/context/search";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -13,11 +16,15 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={outfit.className}>{children}</body>
+      <body className={outfit.className}>
+        <QueryProvider>
+          <SearchProvider>{children}</SearchProvider>
+        </QueryProvider>
+      </body>
     </html>
   );
 }
