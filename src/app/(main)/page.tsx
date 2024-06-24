@@ -12,8 +12,6 @@ import {
 import dayjs from "dayjs";
 import { MdLocalMovies } from "react-icons/md";
 import Link from "next/link";
-// import { useEffect } from "react";
-// import clientPromise from "@/lib/mongodb";
 
 export default function Page() {
   // Queries
@@ -22,26 +20,9 @@ export default function Page() {
     page: 2,
   });
 
-  const fetchUsers = async () => {
-    try {
-      console.log("Users fetching");
-
-      const res = await fetch("http://localhost:3000/api/login/");
-
-      const data = await res.json();
-
-      console.log(data);
-
-      console.log("Users fetched");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <section>
       <h1>Trending</h1>
-      <button onClick={fetchUsers}>Fetch Users</button>
       {trendingError ? (
         <ErrorMessage error={trendingError} />
       ) : !trendingData ? (

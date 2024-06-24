@@ -8,3 +8,11 @@ export const axiosTMDBClient = axios.create({
     Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
   },
 });
+
+export const axiosClient = axios.create({
+  baseURL: process.env.BASE_URL,
+  headers: {
+    accept: "application/json",
+    "content-type": "application/json",
+  },
+});

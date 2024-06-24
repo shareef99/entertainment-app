@@ -3,7 +3,8 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/app/query-provider";
 import { ReactNode } from "react";
-import SearchProvider from "@/context/search";
+import AuthProvider from "@/context/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -22,7 +23,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={outfit.className}>
         <QueryProvider>
-          <SearchProvider>{children}</SearchProvider>
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>

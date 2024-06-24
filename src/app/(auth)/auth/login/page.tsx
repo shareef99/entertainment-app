@@ -7,6 +7,7 @@ import { MdMovie } from "react-icons/md";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuthContext } from "@/context/auth";
 
 const schema = z.object({
   email: z.string().email(),
@@ -25,9 +26,11 @@ export default function Page() {
     resolver: zodResolver(schema),
   });
 
+  const { login } = useAuthContext();
+
   // Functions
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    console.log(data);
+    login({ email: data.email, password: data.password });
   };
 
   return (

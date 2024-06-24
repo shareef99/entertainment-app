@@ -1,10 +1,6 @@
 import { AxiosError } from "axios";
 
 export function parseError(error: unknown): string {
-  if (error instanceof Error) {
-    return error.message;
-  }
-
   if (typeof error === "string") {
     return error;
   }
@@ -13,6 +9,10 @@ export function parseError(error: unknown): string {
     if (error.response) {
       return error.response.data.message;
     }
+  }
+
+  if (error instanceof Error) {
+    return error.message;
   }
 
   return "Unknown error";

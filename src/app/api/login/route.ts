@@ -1,6 +1,7 @@
 import clientPromise from "@/lib/mongodb";
 import { NextRequest } from "next/server";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 
 export async function POST(request: NextRequest) {
   const schema = z.object({
@@ -17,29 +18,60 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return new Response("Hello, Next.js!", {
+  const client = await clientPromise;
+
+  if (!client) {
+    return new Response("Error connecting to MongoDB", { status: 500 });
+  }
+
+  const db = client.db("db");
+
+  const user = await db
+    .collection("users")
+    .findOne({ email: parseResult.data.email });
+
+  if (!user) {
+    return new Response(JSON.stringify({ message: "User not found" }), {
+      status: 400,
+    });
+  }
+
+  const isValidPassword = await bcrypt.compare(
+    parseResult.data.password,
+    user.password,
+  );
+
+  if (!isValidPassword) {
+    return new Response(JSON.stringify({ message: "Invalid password" }), {
+      status: 400,
+    });
+  }
+
+  return new Response(JSON.stringify({ message: "Login successful", user }), {
     status: 200,
   });
 }
 
 export async function GET() {
   try {
-    console.log("Fetching users...");
     const client = await clientPromise;
 
-    console.log(client);
-
-    if (!client) return;
+    if (!client) {
+      return new Response(
+        JSON.stringify({ message: "Error connecting to MongoDB" }),
+        { status: 500 },
+      );
+    }
 
     const db = client.db("db");
 
     const users = await db.collection("users").find({}).toArray();
 
-    console.log(users);
-    console.log("Users fetched");
     return new Response(JSON.stringify(users), { status: 200 });
   } catch (error) {
     console.error(error);
-    return new Response("Error fetching users", { status: 500 });
+    return new Response(JSON.stringify({ message: "Error fetching users" }), {
+      status: 500,
+    });
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthContext } from "@/context/auth";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -9,10 +10,13 @@ import {
   MdLocalMovies,
   MdTv,
   MdOutlineBookmark,
+  MdLogin,
+  MdLogout,
 } from "react-icons/md";
 
 export default function Header() {
   const pathname = usePathname();
+  const { user, logout } = useAuthContext();
 
   return (
     <header
@@ -58,8 +62,16 @@ export default function Header() {
           />
         </Link>
       </div>
-      <div>
-        <div className="size-8 rounded-full bg-white"></div>
+      <div className="flex size-8 items-center justify-center rounded-full bg-white">
+        {user ? (
+          <button title="Logout" onClick={logout}>
+            <MdLogout className={cn("size-6 text-dark-blue")} />
+          </button>
+        ) : (
+          <Link href="/auth/login" title="Login">
+            <MdLogin className={cn("size-6 text-dark-blue")} />
+          </Link>
+        )}
       </div>
     </header>
   );
