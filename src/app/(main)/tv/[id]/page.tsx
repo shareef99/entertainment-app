@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { MdOutlineStarOutline, MdOutlineStarPurple500 } from "react-icons/md";
-import { FaImdb, FaLink } from "react-icons/fa";
+import { FaLink } from "react-icons/fa";
 
 export default function Page() {
   const { id } = useParams<{ id: string }>();
