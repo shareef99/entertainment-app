@@ -65,7 +65,7 @@ export default function AuthProvider({ children }: Props) {
       const { data } = await axiosClient.post<{
         message: string;
         user: User;
-      }>("/login", { email, password });
+      }>("/api/login", { email, password });
 
       setUser(data.user);
       localStorage.setItem("user", JSON.stringify(data.user));
@@ -96,7 +96,7 @@ export default function AuthProvider({ children }: Props) {
       const { data } = await axiosClient.post<{
         message: string;
         userId: string;
-      }>("/signup", { email, password });
+      }>("/api/signup", { email, password });
 
       setUser({ id: data.userId, email, bookmarks: [] });
       localStorage.setItem(
@@ -130,7 +130,7 @@ export default function AuthProvider({ children }: Props) {
         bookmarks: [...user.bookmarks, movieOrShow],
       };
 
-      await axiosClient.put("/bookmark", {
+      await axiosClient.put("/api/bookmark", {
         email: user.email,
         bookmarks: updatedUser.bookmarks,
       });
@@ -166,7 +166,7 @@ export default function AuthProvider({ children }: Props) {
         bookmarks: user.bookmarks.filter((x) => x.id !== id),
       };
 
-      await axiosClient.put("/bookmark", {
+      await axiosClient.put("/api/bookmark", {
         email: user.email,
         bookmarks: updatedUser.bookmarks,
       });
