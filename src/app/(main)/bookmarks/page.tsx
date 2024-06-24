@@ -1,7 +1,6 @@
 "use client";
 
 import Bookmark from "@/components/bookmark";
-import ErrorMessage from "@/components/error-message";
 import { useAuthContext } from "@/context/auth";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -14,58 +13,100 @@ export default function Page() {
   return (
     <main>
       {user === null ? (
-        <>
+        <section className="space-y-2">
           <h1>Bookmarks Movies and TV Shows</h1>
-          <ErrorMessage error={"user not logged in"} />
-        </>
+          <Link
+            href="/auth/login"
+            className="text-xl text-red underline underline-offset-4"
+          >
+            Login to view bookmarks
+          </Link>
+        </section>
       ) : (
-        <>
+        <section>
           <h1>Bookmarks Movies</h1>
-          <section className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {user.bookmarks.map((tv) => (
-              <div key={tv.id} className="relative">
-                <Bookmark movieOrShow={tv} />
-                <Link href={`/tv/${tv.id}`}>
-                  {tv.backdrop_path ? (
+          <div className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {user.bookmarks
+              .filter((movie) => movie.media_type === "movie")
+              .map((movie) => (
+                <div key={movie.id} className="relative">
+                  <Bookmark movieOrShow={movie} />
+                  <Link href={`/movies/${movie.id}`}>
                     <Image
-                      alt={tv.name || tv.title || ""}
-                      src={`https://image.tmdb.org/t/p/w500${tv.backdrop_path}`}
+                      alt={movie.title || movie.name || ""}
+                      src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
                       width={500}
                       height={100}
                       className="h-auto w-auto rounded-md"
                       priority
                     />
-                  ) : (
-                    <div className="relative h-[180px] w-auto rounded-md bg-white/75 opacity-60">
-                      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-black">
-                        No Image
-                      </div>
-                    </div>
-                  )}
-                  <div className="mt-2">
-                    <div className="flex items-center gap-2 text-sm text-white/80">
-                      <span>{dayjs(tv.first_air_date).format("YYYY")}</span>
-                      <div className="h-1 w-1 rounded-full bg-white"></div>
-                      <div className="flex items-center gap-1">
-                        <MdLocalMovies />
+                    <div className="mt-2">
+                      <div className="flex items-center gap-2 text-sm text-white/80">
                         <span>
-                          {tv.media_type === "tv"
-                            ? "Tv"
-                            : tv.media_type === "tv"
-                              ? "TV Series"
-                              : "Person"}
+                          {dayjs(
+                            movie.release_date || movie.first_air_date,
+                          ).format("YYYY")}
                         </span>
+                        <div className="h-1 w-1 rounded-full bg-white"></div>
+                        <div className="flex items-center gap-1">
+                          <MdLocalMovies />
+                          <span>
+                            {movie.media_type === "movie"
+                              ? "Movie"
+                              : "TV Series"}
+                          </span>
+                        </div>
+                        <div className="h-1 w-1 rounded-full bg-white"></div>
+                        <span>{movie.adult ? "R" : "PG"}</span>
                       </div>
-                      <div className="h-1 w-1 rounded-full bg-white"></div>
-                      <span>{tv.adult ? "R" : "PG"}</span>
+                      <div className="text-lg">{movie.title || movie.name}</div>
                     </div>
-                    <div className="text-lg">{tv.name}</div>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </section>
-        </>
+                  </Link>
+                </div>
+              ))}
+          </div>
+          <h1 className="mt-8">Bookmarks TV Shows</h1>
+          <div className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {user.bookmarks
+              .filter((movie) => movie.media_type === "tv")
+              .map((movie) => (
+                <div key={movie.id} className="relative">
+                  <Bookmark movieOrShow={movie} />
+                  <Link href={`/tv/${movie.id}`}>
+                    <Image
+                      alt={movie.title || movie.name || ""}
+                      src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                      width={500}
+                      height={100}
+                      className="h-auto w-auto rounded-md"
+                      priority
+                    />
+                    <div className="mt-2">
+                      <div className="flex items-center gap-2 text-sm text-white/80">
+                        <span>
+                          {dayjs(
+                            movie.release_date || movie.first_air_date,
+                          ).format("YYYY")}
+                        </span>
+                        <div className="h-1 w-1 rounded-full bg-white"></div>
+                        <div className="flex items-center gap-1">
+                          <MdLocalMovies />
+                          <span>
+                            {movie.media_type === "movie"
+                              ? "Movie"
+                              : "TV Series"}
+                          </span>
+                        </div>
+                        <div className="h-1 w-1 rounded-full bg-white"></div>
+                        <span>{movie.adult ? "R" : "PG"}</span>
+                      </div>
+                      <div className="text-lg">{movie.title || movie.name}</div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+          </div>
+        </section>
       )}
     </main>
   );

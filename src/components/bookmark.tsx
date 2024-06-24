@@ -20,8 +20,6 @@ export default function Bookmark({ className, movieOrShow }: Props) {
         className,
       )}
       onClick={() => {
-        console.log("Clicked", movieOrShow);
-
         if (hasBookmark) {
           removeBookmark(movieOrShow.id);
           return;
