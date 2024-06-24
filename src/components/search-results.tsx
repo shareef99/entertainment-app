@@ -1,3 +1,4 @@
+import Bookmark from "@/components/bookmark";
 import { MovieOrShow } from "@/types/tmdb";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -27,7 +28,8 @@ export default function SearchResults({ searchData, query, whichPage }: Props) {
             }
           })
           .map((movie) => (
-            <div key={movie.id}>
+            <div key={movie.id} className="relative">
+              <Bookmark movieOrShow={movie} />
               {movie.backdrop_path ? (
                 <Image
                   alt={movie.title || movie.name || ""}

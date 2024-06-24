@@ -16,12 +16,15 @@ import {
 import { axiosClient } from "@/axios";
 import { useRouter } from "next/navigation";
 import { parseError } from "@/helpers/general";
+import { MovieOrShow } from "@/types/tmdb";
 
 type AuthContextType = {
   user: User | null;
   login: (_data: { email: string; password: string }) => void;
   logout: () => void;
   signup: (_data: { email: string; password: string }) => void;
+  addBookmark: (_movieOrShow: MovieOrShow) => void;
+  removeBookmark: (_id: number) => void;
 };
 
 const AuthContextDefaultValues: AuthContextType = {
@@ -29,6 +32,8 @@ const AuthContextDefaultValues: AuthContextType = {
   login: () => {},
   logout: () => {},
   signup: () => {},
+  addBookmark: () => {},
+  removeBookmark: () => {},
 };
 
 const AuthContext = createContext<AuthContextType>(AuthContextDefaultValues);
@@ -107,6 +112,78 @@ export default function AuthProvider({ children }: Props) {
     }
   };
 
+  const addBookmark = async (movieOrShow: MovieOrShow) => {
+    try {
+      loadingNotification("Adding bookmark...", {
+        id: `addBookmark ${movieOrShow.id}`,
+      });
+
+      if (!user) {
+        errorNotification("Please login to add bookmark", {
+          id: `addBookmark ${movieOrShow.id}`,
+        });
+        return;
+      }
+
+      const updatedUser = {
+        ...user,
+        bookmarks: [...user.bookmarks, movieOrShow],
+      };
+
+      await axiosClient.put("/bookmark", {
+        email: user.email,
+        bookmarks: updatedUser.bookmarks,
+      });
+
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      successNotification("Added bookmark successfully!", {
+        id: `addBookmark ${movieOrShow.id}`,
+      });
+    } catch (error) {
+      errorNotification(parseError(error) || "Failed to add bookmark", {
+        id: `addBookmark ${movieOrShow.id}`,
+      });
+    }
+  };
+
+  const removeBookmark = async (id: number) => {
+    try {
+      loadingNotification("Removing bookmark...", {
+        id: `removeBookmark ${id}`,
+      });
+
+      if (!user) {
+        errorNotification("Please login to remove bookmark", {
+          id: `removeBookmark ${id}`,
+        });
+        return;
+      }
+
+      const updatedUser = {
+        ...user,
+        bookmarks: user.bookmarks.filter((x) => x.id !== id),
+      };
+
+      await axiosClient.put("/bookmark", {
+        email: user.email,
+        bookmarks: updatedUser.bookmarks,
+      });
+
+      setUser(updatedUser);
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      successNotification("Removed bookmark successfully!", {
+        id: `removeBookmark ${id}`,
+      });
+    } catch (error) {
+      errorNotification(parseError(error) || "Failed to remove bookmark", {
+        id: `removeBookmark ${id}`,
+      });
+    }
+  };
+
   // Effects
   // Effect to check if the user is already logged in and set the user state
   useEffect(() => {
@@ -123,6 +200,8 @@ export default function AuthProvider({ children }: Props) {
         login,
         logout,
         signup,
+        addBookmark,
+        removeBookmark,
       }}
     >
       {children}

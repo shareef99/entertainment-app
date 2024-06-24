@@ -12,6 +12,7 @@ import {
 import dayjs from "dayjs";
 import { MdLocalMovies } from "react-icons/md";
 import Link from "next/link";
+import Bookmark from "@/components/bookmark";
 
 export default function Page() {
   // Queries
@@ -35,6 +36,7 @@ export default function Page() {
                 key={movie.id}
                 className="relative mt-4 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
               >
+                <Bookmark className="right-12" movieOrShow={movie} />
                 <Link
                   href={
                     movie.media_type === "movie"
@@ -78,7 +80,7 @@ export default function Page() {
           </CarouselContent>
         </Carousel>
       )}
-      <h1>Recommended for you</h1>
+      <h1 className="mt-8">Recommended for you</h1>
       {recommendedError ? (
         <ErrorMessage error={recommendedError} />
       ) : !recommendedData ? (
@@ -86,44 +88,46 @@ export default function Page() {
       ) : (
         <section className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {recommendedData.results.map((movie) => (
-            <Link
-              href={
-                movie.media_type === "movie"
-                  ? `/movies/${movie.id}`
-                  : movie.media_type === "tv"
-                    ? `/tv/${movie.id}`
-                    : "/"
-              }
-              key={movie.id}
-            >
-              <Image
-                alt={movie.title || movie.name || ""}
-                src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
-                width={500}
-                height={100}
-                className="h-auto w-auto rounded-md"
-                priority
-              />
-              <div className="mt-2">
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <span>
-                    {dayjs(movie.release_date || movie.first_air_date).format(
-                      "YYYY",
-                    )}
-                  </span>
-                  <div className="h-1 w-1 rounded-full bg-white"></div>
-                  <div className="flex items-center gap-1">
-                    <MdLocalMovies />
+            <div key={movie.id} className="relative">
+              <Bookmark movieOrShow={movie} />
+              <Link
+                href={
+                  movie.media_type === "movie"
+                    ? `/movies/${movie.id}`
+                    : movie.media_type === "tv"
+                      ? `/tv/${movie.id}`
+                      : "/"
+                }
+              >
+                <Image
+                  alt={movie.title || movie.name || ""}
+                  src={`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`}
+                  width={500}
+                  height={100}
+                  className="h-auto w-auto rounded-md"
+                  priority
+                />
+                <div className="mt-2">
+                  <div className="flex items-center gap-2 text-sm text-white/80">
                     <span>
-                      {movie.media_type === "movie" ? "Movie" : "TV Series"}
+                      {dayjs(movie.release_date || movie.first_air_date).format(
+                        "YYYY",
+                      )}
                     </span>
+                    <div className="h-1 w-1 rounded-full bg-white"></div>
+                    <div className="flex items-center gap-1">
+                      <MdLocalMovies />
+                      <span>
+                        {movie.media_type === "movie" ? "Movie" : "TV Series"}
+                      </span>
+                    </div>
+                    <div className="h-1 w-1 rounded-full bg-white"></div>
+                    <span>{movie.adult ? "R" : "PG"}</span>
                   </div>
-                  <div className="h-1 w-1 rounded-full bg-white"></div>
-                  <span>{movie.adult ? "R" : "PG"}</span>
+                  <div className="text-lg">{movie.title || movie.name}</div>
                 </div>
-                <div className="text-lg">{movie.title || movie.name}</div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))}
         </section>
       )}
