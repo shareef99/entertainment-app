@@ -18,7 +18,7 @@ export default function Header() {
     <header
       className={cn(
         "container flex items-center justify-between bg-dark-blue py-4",
-        "lg:mx-8 lg:mt-8 lg:h-[calc(100vh-4rem)] lg:w-fit lg:flex-col lg:items-start lg:rounded-md lg:px-4 lg:py-6",
+        "lg:sticky lg:top-8 lg:ml-8 lg:mt-8 lg:h-[calc(100vh-4rem)] lg:w-fit lg:flex-col lg:items-start lg:rounded-md lg:px-4 lg:py-6",
       )}
     >
       <div>
@@ -28,32 +28,32 @@ export default function Header() {
         <Link href="/">
           <MdDashboard
             className={cn(
-              "text-2xl text-white transition-colors duration-300 ease-in hover:text-red sm:text-3xl",
-              pathname === "/" && "text-red",
+              "text-2xl text-light-blue transition-colors duration-300 ease-in hover:text-red sm:text-3xl",
+              pathname === "/" && "text-white",
             )}
           />
         </Link>
         <Link href="/movies">
           <MdLocalMovies
             className={cn(
-              "text-2xl text-white transition-colors duration-300 ease-in hover:text-red sm:text-3xl",
-              pathname === "/movies" && "text-red",
+              "text-2xl text-light-blue transition-colors duration-300 ease-in hover:text-red sm:text-3xl",
+              pathname.includes("/movies") && "text-white",
             )}
           />
         </Link>
         <Link href="/tv">
           <MdTv
             className={cn(
-              "text-2xl text-white transition-colors duration-300 ease-in hover:text-red sm:text-3xl",
-              pathname === "/tv" && "text-red",
+              "text-2xl text-light-blue transition-colors duration-300 ease-in hover:text-red sm:text-3xl",
+              pathname.includes("/tv") && "text-white",
             )}
           />
         </Link>
         <Link href="/bookmarks">
           <MdOutlineBookmark
             className={cn(
-              "text-2xl text-white transition-colors duration-300 ease-in hover:text-red sm:text-3xl",
-              pathname === "/bookmarks" && "text-red",
+              "text-2xl text-light-blue transition-colors duration-300 ease-in hover:text-red sm:text-3xl",
+              pathname.includes("/bookmarks") && "text-white",
             )}
           />
         </Link>
