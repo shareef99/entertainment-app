@@ -10,6 +10,7 @@ export const axiosTMDBClient = axios.create({
 });
 
 export const axiosClient = axios.create({
+  baseURL: process.env.BASE_URL,
   headers: {
     accept: "application/json",
     "content-type": "application/json",
