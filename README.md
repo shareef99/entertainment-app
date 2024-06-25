@@ -24,7 +24,7 @@
 - [📂 Repository Structure](#📂-repository-structure)
 - [🚀 Getting Started](#🚀-getting-started)
   - [🔧 Installation](#🔧-installation)
-  - [🤖 Running Flashcard](#🤖-running-flashcard-generator)
+  - [🤖 Running Entertainment App](#🤖-running-flashcard-generator)
   - [🌐 Deployment Link](#🌐-deployment-link)
 - [🤝 Contributing](#🤝-contributing)
 
