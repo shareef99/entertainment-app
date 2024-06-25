@@ -24,7 +24,11 @@ export default function Page() {
         </section>
       ) : (
         <section>
-          <h1>Bookmarks Movies</h1>
+          {user.bookmarks.length === 0 && (
+            <h1>It looks like you don&apos;t have any bookmarks</h1>
+          )}
+          {user.bookmarks.filter((movie) => movie.media_type === "movie")
+            .length > 0 && <h1>Bookmarks Movies</h1>}
           <div className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {user.bookmarks
               .filter((movie) => movie.media_type === "movie")
@@ -65,7 +69,8 @@ export default function Page() {
                 </div>
               ))}
           </div>
-          <h1 className="mt-8">Bookmarks TV Shows</h1>
+          {user.bookmarks.filter((movie) => movie.media_type === "tv").length >
+            0 && <h1>Bookmarks TV Shows</h1>}
           <div className="mt-4 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {user.bookmarks
               .filter((movie) => movie.media_type === "tv")
