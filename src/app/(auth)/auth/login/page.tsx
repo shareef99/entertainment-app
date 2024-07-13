@@ -72,7 +72,7 @@ export default function Page() {
               )}
             </div>
             <Button variant="red" className="mt-4" type="submit">
-              Create an account
+              Login to your account
             </Button>
           </form>
           <div className="mt-4 flex items-center justify-center gap-2 text-sm font-light">
