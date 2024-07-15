@@ -1,22 +1,6 @@
 "use client";
 
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { User } from "@/types/user";
-import {
-  errorNotification,
-  loadingNotification,
-  successNotification,
-} from "@/helpers/notification";
-import { axiosClient } from "@/axios";
-import { useRouter } from "next/navigation";
-import { parseError } from "@/helpers/general";
-import { MovieOrShow } from "@/types/tmdb";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 type SearchContextType = {
   search: string;
