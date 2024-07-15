@@ -2,6 +2,7 @@ import Bookmark from "@/components/bookmark";
 import { MovieOrShow } from "@/types/tmdb";
 import dayjs from "dayjs";
 import Image from "next/image";
+import Link from "next/link";
 import { MdLocalMovies } from "react-icons/md";
 
 type Props = {
@@ -28,7 +29,17 @@ export default function SearchResults({ searchData, query, whichPage }: Props) {
             }
           })
           .map((movie) => (
-            <div key={movie.id} className="relative">
+            <Link
+              href={
+                movie.media_type === "movie"
+                  ? `/movies/${movie.id}`
+                  : movie.media_type === "tv"
+                    ? `/tv/${movie.id}`
+                    : "/"
+              }
+              key={movie.id}
+              className="relative"
+            >
               <Bookmark movieOrShow={movie} />
               {movie.backdrop_path ? (
                 <Image
@@ -68,7 +79,7 @@ export default function SearchResults({ searchData, query, whichPage }: Props) {
                 </div>
                 <div className="text-lg">{movie.title || movie.name}</div>
               </div>
-            </div>
+            </Link>
           ))}
       </div>
     </section>
