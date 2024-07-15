@@ -6,6 +6,7 @@ import Header from "@/components/header";
 import Loading from "@/components/loading";
 import SearchResults from "@/components/search-results";
 import { Input } from "@/components/ui/input";
+import { useSearchContext } from "@/context/search";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
@@ -23,7 +24,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           : "Search for bookmarked shows";
 
   // State
-  const [search, setSearch] = useState<string>("");
+  const { search, setSearch } = useSearchContext();
   const [debouncedSearch, setDebouncedSearch] = useState<string>("");
 
   // Effects

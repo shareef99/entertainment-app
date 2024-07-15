@@ -5,6 +5,7 @@ import QueryProvider from "@/app/query-provider";
 import { ReactNode } from "react";
 import AuthProvider from "@/context/auth";
 import { Toaster } from "@/components/ui/sonner";
+import SearchProvider from "@/context/search";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -24,8 +25,10 @@ export default function RootLayout({
       <body className={outfit.className}>
         <QueryProvider>
           <AuthProvider>
-            {children}
-            <Toaster />
+            <SearchProvider>
+              {children}
+              <Toaster />
+            </SearchProvider>
           </AuthProvider>
         </QueryProvider>
       </body>

@@ -1,4 +1,5 @@
 import Bookmark from "@/components/bookmark";
+import { useSearchContext } from "@/context/search";
 import { MovieOrShow } from "@/types/tmdb";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -12,6 +13,8 @@ type Props = {
 };
 
 export default function SearchResults({ searchData, query, whichPage }: Props) {
+  const { setSearch } = useSearchContext();
+
   return (
     <section>
       <h1>Search Results for {query}</h1>
@@ -39,6 +42,7 @@ export default function SearchResults({ searchData, query, whichPage }: Props) {
               }
               key={movie.id}
               className="relative"
+              onClick={() => setSearch("")}
             >
               <Bookmark movieOrShow={movie} />
               {movie.backdrop_path ? (
